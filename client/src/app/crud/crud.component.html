@@ -1,0 +1,94 @@
+<div class="bg-dark d-flex flex-wrap justify-content-between p-2">
+    <h3 class="text-light">Crud App (PEAN) </h3>
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="showModal()"
+            data-bs-target="#exampleModal">
+            Add Employee
+        </button>
+    </div>
+</div>
+
+<p-table [value]="employeeDetail" responsiveLayout="scroll" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email Id</th>
+            <th>Age</th>
+            <th> Action </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-emp>
+        <tr>
+            <td> {{emp.firstName}} </td>
+            <td> {{emp.lastName}} </td>
+            <td> {{emp.emailId}} </td>
+            <td> {{emp.age}} </td>
+            <td>
+                <button class="btn btn-secondary btn-sm" (click)="veiwEmployee(emp.id)"> <i class="fa-solid fa-eye"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-warning btn-sm" (click)="showModal(); onEdit(emp)" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"><i class="fa-solid fa-pen-to-square"></i></button>
+                &nbsp;
+                <button class="btn btn-danger btn-sm" (click)="deleteEmployee(emp.id)"><i
+                        class="fa-solid fa-trash-can"></i></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formValue">
+                    <div class="mb-3 -inputgroup">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" formControlName="firstName">
+                        <div *ngIf="formValue.controls['firstName'].hasError('required') && (formValue.controls['firstName'].touched|| formValue.controls['firstName'].dirty )"
+                            class="alert alert-danger ">
+                            First Name is required
+                            <div
+                                *ngIf="formValue.controls['firstName'].hasError('pattern')&& (formValue.controls['firstName'].touched|| formValue.controls['firstName'].dirty   )">
+                                fist Name is not Valid
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 -inputgroup">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" formControlName="lastName">
+                    </div>
+
+                    <div class="mb-3 -inputgroup">
+                        <label class="form-label">Age</label>
+                        <input type="text" class="form-control" formControlName="age">
+                    </div>
+                    <div class="mb-3 -inputgroup">
+                        <label class="form-label">EmpId</label>
+                        <input type="text" class="form-control" formControlName="EmpId">
+                    </div>
+                    <div class="mb-3 -inputgroup">
+                        <label class="form-label">Email ID</label>
+                        <input type="text" class="form-control" formControlName="emailId">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary btn-sm" *ngIf="showUpdate" (click)="updateEmployee();">Update</button>
+                <button type="submit" class="btn btn-primary btn-sm" *ngIf="showAdd" (click)="addEmployee(); "
+                    [disabled]="formValue.invalid" data-bs-dismiss="modal"> Add</button>
+            </div>
+        </div>
+    </div>
+</div>
